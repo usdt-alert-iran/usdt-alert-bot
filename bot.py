@@ -36,7 +36,7 @@ def get_usdt_price():
 
 
 def send_message(text):
-  try:
+    try:
         bot.send_message(
             chat_id=CHAT_ID,
             text=text
