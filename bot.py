@@ -4,7 +4,6 @@ import requests
 from datetime import datetime, timedelta
 from telegram import Bot
 
-# تنظیمات
 TOKEN = os.environ.get("TELEGRAM_TOKEN")
 CHAT_ID = os.environ.get("CHAT_ID")
 
@@ -18,16 +17,12 @@ alert_sent = False
 
 
 def get_usdt_price():
-    url = "https://api.nobitex.ir/market/stats"
+    url = "https://api.nobitex.ir/v3/orderbook/USDTIRT"
 
-    params = {
-        "symbol": "USDTIRT"
-    }
-
-    response = requests.get(url, params=params, timeout=10)
+    response = requests.get(url, timeout=10)
     data = response.json()
 
-    price = float(data["stats"]["usdtirt"]["latest"])
+    price = float(data["lastTradePrice"])
 
     return price
 
@@ -62,7 +57,7 @@ def check_price():
         elif now - start_time >= timedelta(hours=4) and not alert_sent:
 
             send_message(
-                f"🚀 4 hour confirmation complete\nCurrent price: {price}"
+                f"🚀 4 hours confirmed\nCurrent price: {price}"
             )
 
             alert_sent = True
