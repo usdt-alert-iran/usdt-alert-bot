@@ -47,37 +47,15 @@ def check_price():
     global start_time, alert_sent
 
     price = get_usdt_price()
-
-    if price is None:
-        return
-
     now = datetime.now()
 
-    print(
-        datetime.now(),
-        "USDT:",
-        price
-    )
-
     if price >= TARGET_PRICE:
-      if start_time is None:
+        if start_time is None:
             start_time = now
-            send_message(
-                f"🟢 تتر وارد محدوده شد\n"
-                f"قیمت فعلی: {price:,.0f} تومان\n"
-                f"زمان شروع بررسی: {now}"
-            )
-        elif now - start_time >= timedelta(hours=4) and not alert_sent:
-
-            send_message(
-                f"🚀 شرط ۴ ساعت تایید شد\n\n"
-                f"تتر حداقل ۴ ساعت بالای {TARGET_PRICE:,} تومان ماند.\n"
-                f"قیمت فعلی: {price:,.0f} تومان\n\n"
-                f"تارگت‌های احتمالی:\n"
-                f"🎯 200,000\n"
-                f"🎯 205,000"
-            )
-
+            send_message(f"USDT reached {price}. Checking 4 hours...")
+        
+    elif now - start_time >= timedelta(hours=4) and not alert_sent:
+            send_message(f"4 hours confirmed. Current price: {price}")
             alert_sent = True
 
     else:
